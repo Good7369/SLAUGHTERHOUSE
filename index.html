@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <title>SLAUGHTERHOUSE</title>
 
-  <!-- Favicon mejorado -->
-  <link rel="icon" type="image/png" href="slaughterhouse-icon.png">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="slaughterhouse-icon.png">
+  <link rel="apple-touch-icon" href="slaughterhouse-icon.png">
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 
@@ -17,12 +19,21 @@
       background-size: 400% 400%;
       animation: lava 10s ease infinite;
       padding: 30px;
+      transition: all 0.3s;
     }
 
     @keyframes lava {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
+    }
+
+    @keyframes madness {
+      0% { background-color: #ff0000; transform: rotate(0deg) scale(1); }
+      25% { background-color: #000000; transform: rotate(5deg) scale(1.02); }
+      50% { background-color: #ffff00; transform: rotate(-5deg) scale(0.98); }
+      75% { background-color: #ff00ff; transform: rotate(3deg) scale(1.03); }
+      100% { background-color: #00ffff; transform: rotate(0deg) scale(1); }
     }
 
     h1 {
@@ -87,6 +98,21 @@
       text-shadow: 0 0 30px red, 0 0 60px black;
       margin-top: 10px;
     }
+
+    #crazyBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ff0000;
+      color: white;
+      padding: 15px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 0 10px black;
+      cursor: pointer;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
@@ -104,6 +130,49 @@
     <li>Creador original: Royce Da 5'9"</li>
     <li>Verificador: Doggie</li>
   </ul>
+
+  <button id="crazyBtn">VOLVERSE LOCO ☠</button>
+
+  <script>
+    let crazyMode = false;
+    let rightClickCount = 0;
+
+    function activateMadness() {
+      document.body.style.animation = "madness 0.2s infinite";
+      document.querySelectorAll("p, h1, h2, ul, .logo").forEach(el => {
+        el.style.transform = "rotate(5deg)";
+        el.style.transition = "transform 0.3s";
+      });
+      crazyMode = true;
+    }
+
+    function restoreNormal() {
+      document.body.style.animation = "";
+      document.querySelectorAll("p, h1, h2, ul, .logo").forEach(el => {
+        el.style.transform = "";
+      });
+      crazyMode = false;
+      rightClickCount = 0;
+    }
+
+    document.getElementById("crazyBtn").addEventListener("click", activateMadness);
+
+    document.addEventListener("contextmenu", function (e) {
+      if (crazyMode) {
+        rightClickCount++;
+        if (rightClickCount >= 3) {
+          restoreNormal();
+          alert("Modo normal restaurado.");
+        }
+      }
+    });
+
+    setInterval(() => {
+      if (crazyMode) {
+        alert("CLIP DERECHO 3 VECES TON0");
+      }
+    }, 50000);
+  </script>
 
 </body>
 </html>
